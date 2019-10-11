@@ -1,0 +1,28 @@
+﻿@page
+@using ServerDemo.Forum;
+@inject ForumService forumService
+@model ServerDemo.Pages.ForumModel
+@{
+}
+
+@foreach (var post in forumService.GetPosts())
+{
+    <div>
+        <label>User:</label> @post.User <br />
+        <label>Date:</label> @post.PostedAt.ToLocalTime() <br />
+        @post.Content
+        <br />
+    </div>
+    <hr />
+}
+
+<div>
+    <h2>Post a comment</h2>
+    <form method="post">
+        <label>User: </label> <input name="user" required/><br />
+        <label>Comment:</label><br />
+        <input name="content" class="form-control" required/><br />
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
