@@ -1,5 +1,41 @@
 ﻿@page
+@using Microsoft.AspNetCore.Connections.Features;
+@using Microsoft.AspNetCore.Http.Extensions;
+@using Microsoft.AspNetCore.Http.Features;
 @model ServerDemo.Pages.RequestDetailsModel
 @{
     ViewData["Title"] = "Request Details";
+    var tlsInfo = HttpContext.Features.Get<ITlsHandshakeFeature>();
+}
+@Request.Method @Request.Protocol @Request.GetDisplayUrl()
+<br />
+
+Raw Url: @(HttpContext.Features.Get<IHttpRequestFeature>().RawTarget)
+<br />
+
+<br />
+Headers:
+<br />
+<ul>
+    @foreach (var headerPair in @Request.Headers)
+    {
+        foreach (var value in headerPair.Value)
+        {
+            <li>@headerPair.Key : @value</li>
+        }
+    }
+</ul>
+<br />
+@if (tlsInfo != null) // HttpSys has implemented this, IIS hasn't.
+{
+TLS:
+    <ul>
+        <li>Protocol: @tlsInfo.Protocol</li>
+        <li>Cipher Algorithm: @tlsInfo.CipherAlgorithm</li>
+        <li>Cipher Strength: @tlsInfo.CipherStrength</li>
+        <li>Hash Algorithm: @tlsInfo.HashAlgorithm</li>
+        <li>Hash Strength: @tlsInfo.HashStrength</li>
+        <li>Key Exchange Algorithm: @tlsInfo.KeyExchangeAlgorithm</li>
+        <li>Key Exchange Strength: @tlsInfo.KeyExchangeStrength</li>
+    </ul>
 }
