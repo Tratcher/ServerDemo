@@ -7,15 +7,17 @@
     ViewData["Title"] = "Request Details";
     var tlsInfo = HttpContext.Features.Get<ITlsHandshakeFeature>();
 }
-@Request.Method @Request.Protocol @Request.GetDisplayUrl()
+Protocol: @Request.Protocol
 <br />
-
+Method: @Request.Method
+<br />
+Url: @Request.GetDisplayUrl()
+<br />
 Raw Url: @(HttpContext.Features.Get<IHttpRequestFeature>().RawTarget)
 <br />
 
 <br />
-Headers:
-<br />
+<h5>Headers:</h5>
 <ul>
     @foreach (var headerPair in @Request.Headers)
     {
@@ -28,7 +30,7 @@ Headers:
 <br />
 @if (tlsInfo != null) // HttpSys has implemented this, IIS hasn't.
 {
-TLS:
+    <h5>TLS:</h5>
     <ul>
         <li>Protocol: @tlsInfo.Protocol</li>
         <li>Cipher Algorithm: @tlsInfo.CipherAlgorithm</li>
