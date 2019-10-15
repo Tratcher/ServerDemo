@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using ServerDemo.Forum;
 
@@ -35,6 +37,18 @@ namespace ServerDemo
 
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            var uploadPath = Path.Combine(env.ContentRootPath, "uploaded");
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+            app.UseFileServer(new FileServerOptions()
+            {
+                FileProvider = new PhysicalFileProvider(uploadPath),
+                EnableDirectoryBrowsing = true,
+                RequestPath = "/uploads",
+            });
 
             app.UseRouting();
 

@@ -1,0 +1,18 @@
+﻿@page
+@model ServerDemo.Pages.UploadModel
+@{
+}
+
+<form enctype="multipart/form-data" method="post">
+    <dl>
+        <dt>
+            <label>File Upload</label>
+        </dt>
+        <dd>
+            <input name="file" type="file" required>
+        </dd>
+    </dl>
+    <input asp-page-handler="Upload" type="submit" value="Upload" />
+</form>
+<br />
+<a href="/uploads">Browse uploads</a>
